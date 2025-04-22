@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categories",
+  "info": {
+    "displayName": "Category",
+    "pluralName": "categories",
+    "singularName": "category"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "resources": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::resource.resource",
+      "mappedBy": "category"
+    }
+  }
+} 

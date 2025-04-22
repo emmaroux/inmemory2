@@ -1,0 +1,36 @@
+{
+  "name": "Authenticated",
+  "description": "Default role given to authenticated user.",
+  "type": "authenticated",
+  "permissions": {
+    "api::category.category": {
+      "find": true,
+      "findOne": true
+    },
+    "api::resource.resource": {
+      "find": true,
+      "findOne": true,
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "api::vote.vote": {
+      "find": true,
+      "findOne": true,
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "api::comment.comment": {
+      "find": true,
+      "findOne": true,
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "api::team.team": {
+      "find": true,
+      "findOne": true
+    }
+  }
+} 

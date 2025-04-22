@@ -1,0 +1,41 @@
+{
+  "name": "inmemory-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
+    "seed": "NODE_ENV=development node scripts/seed.js"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "5.12.5",
+    "@strapi/plugin-users-permissions": "5.12.5",
+    "@strapi/strapi": "5.12.5",
+    "axios": "^1.8.4",
+    "dotenv": "^16.5.0",
+    "pg": "^8.8.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "e4bfa808-7a72-4552-97b4-0f011a1fce36"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.7.0",
+    "bcryptjs": "^3.0.2"
+  }
+}

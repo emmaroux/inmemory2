@@ -1,0 +1,113 @@
+{
+  "categories": [
+    {
+      "name": "Intelligence Artificielle",
+      "description": "Articles et discussions sur l'IA et ses applications"
+    },
+    {
+      "name": "Maroc",
+      "description": "Articles et discussions sur le Maroc, sa culture et son actualité"
+    }
+  ],
+  "resources": [
+    {
+      "title": "L'IA révolutionne la médecine",
+      "content": "Les avancées récentes en intelligence artificielle permettent de détecter des maladies plus tôt et plus précisément que jamais. Des algorithmes d'apprentissage profond analysent les images médicales avec une précision surhumaine.",
+      "date": "2024-04-20",
+      "location": "Paris, France",
+      "category": "Intelligence Artificielle",
+      "status": "published"
+    },
+    {
+      "title": "L'éthique de l'IA : un débat crucial",
+      "content": "Alors que l'IA se développe rapidement, les questions éthiques deviennent de plus en plus pressantes. Comment garantir que ces technologies servent l'humanité plutôt que de la menacer ?",
+      "date": "2024-04-19",
+      "location": "San Francisco, USA",
+      "category": "Intelligence Artificielle",
+      "status": "published"
+    },
+    {
+      "title": "L'IA dans l'éducation : révolution ou menace ?",
+      "content": "Les outils d'IA comme ChatGPT transforment l'éducation. Certains y voient une opportunité d'apprentissage personnalisé, d'autres craignent la fin de la pensée critique.",
+      "date": "2024-04-18",
+      "location": "Londres, UK",
+      "category": "Intelligence Artificielle",
+      "status": "published"
+    },
+    {
+      "title": "L'IA générative : créativité ou plagiat ?",
+      "content": "Les modèles d'IA générative comme DALL-E et Midjourney soulèvent des questions sur la propriété intellectuelle et la nature de la créativité.",
+      "date": "2024-04-17",
+      "location": "Tokyo, Japon",
+      "category": "Intelligence Artificielle",
+      "status": "published"
+    },
+    {
+      "title": "Le Maroc, hub technologique émergent",
+      "content": "Avec ses zones franches et ses investissements massifs dans les nouvelles technologies, le Maroc s'impose comme un hub technologique majeur en Afrique.",
+      "date": "2024-04-20",
+      "location": "Casablanca, Maroc",
+      "category": "Maroc",
+      "status": "published"
+    },
+    {
+      "title": "La culture marocaine à l'honneur",
+      "content": "Le riche patrimoine culturel marocain, alliant traditions berbères, arabes et andalouses, continue de fasciner le monde entier.",
+      "date": "2024-04-19",
+      "location": "Marrakech, Maroc",
+      "category": "Maroc",
+      "status": "published"
+    },
+    {
+      "title": "Le tourisme marocain en pleine expansion",
+      "content": "Malgré les défis mondiaux, le tourisme marocain connaît une croissance remarquable, attirant des visiteurs du monde entier.",
+      "date": "2024-04-18",
+      "location": "Agadir, Maroc",
+      "category": "Maroc",
+      "status": "published"
+    },
+    {
+      "title": "L'énergie verte au Maroc",
+      "content": "Le Maroc se positionne comme un leader dans les énergies renouvelables, avec des projets ambitieux comme la centrale solaire Noor.",
+      "date": "2024-04-17",
+      "location": "Ouarzazate, Maroc",
+      "category": "Maroc",
+      "status": "published"
+    }
+  ],
+  "users": [
+    {
+      "username": "alice_ia",
+      "email": "alice@ia.com",
+      "password": "password123",
+      "teams": [
+        "Intelligence Artificielle"
+      ]
+    },
+    {
+      "username": "bob_ia",
+      "email": "bob@ia.com",
+      "password": "password123",
+      "teams": [
+        "Intelligence Artificielle"
+      ]
+    },
+    {
+      "username": "charlie_maroc",
+      "email": "charlie@maroc.com",
+      "password": "password123",
+      "teams": [
+        "Maroc"
+      ]
+    },
+    {
+      "username": "david_both",
+      "email": "david@both.com",
+      "password": "password123",
+      "teams": [
+        "Intelligence Artificielle",
+        "Maroc"
+      ]
+    }
+  ]
+}

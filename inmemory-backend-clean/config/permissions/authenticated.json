@@ -1,0 +1,33 @@
+{
+  "role": "authenticated",
+  "permissions": {
+    "category": {
+      "find": true,
+      "findOne": true,
+      "create": false,
+      "update": false,
+      "delete": false
+    },
+    "memory": {
+      "find": true,
+      "findOne": true,
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "vote": {
+      "find": true,
+      "findOne": true,
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "comment": {
+      "find": true,
+      "findOne": true,
+      "create": true,
+      "update": true,
+      "delete": true
+    }
+  }
+}

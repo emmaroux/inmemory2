@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "target": "ES2021",
+    "checkJs": true,
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "exclude": [
+    "node_modules",
+    ".tmp",
+    "build",
+    "dist"
+  ]
+}

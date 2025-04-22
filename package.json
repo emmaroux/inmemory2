@@ -1,0 +1,38 @@
+{
+  "name": "inmemory2",
+  "version": "1.0.0",
+  "description": "InMemory - Plateforme collaborative de partage de ressources",
+  "private": true,
+  "workspaces": [
+    "inmemory-backend-clean",
+    "inmemory-web"
+  ],
+  "scripts": {
+    "clean:all": "rm -rf node_modules && rm -rf inmemory-backend-clean/node_modules && rm -rf inmemory-web/node_modules",
+    "install:all": "npm install && npm run install:back && npm run install:front",
+    "install:back": "cd inmemory-backend-clean && npm install",
+    "install:front": "cd inmemory-web && npm install",
+    "dev:back": "cd inmemory-backend-clean && npm run develop",
+    "dev:front": "cd inmemory-web && npm run dev",
+    "dev:all": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
+    "build:back": "cd inmemory-backend-clean && npm run build",
+    "build:front": "cd inmemory-web && npm run build",
+    "build:all": "npm run build:back && npm run build:front"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmaroux/inmemory2.git"
+  },
+  "keywords": [
+    "inmemory",
+    "collaboration",
+    "ressources",
+    "partage",
+    "veille"
+  ],
+  "author": "",
+  "license": "ISC"
+} 

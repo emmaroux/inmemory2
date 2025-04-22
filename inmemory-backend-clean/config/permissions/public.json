@@ -1,0 +1,33 @@
+{
+  "role": "public",
+  "permissions": {
+    "category": {
+      "find": true,
+      "findOne": true,
+      "create": false,
+      "update": false,
+      "delete": false
+    },
+    "memory": {
+      "find": true,
+      "findOne": true,
+      "create": false,
+      "update": false,
+      "delete": false
+    },
+    "vote": {
+      "find": false,
+      "findOne": false,
+      "create": false,
+      "update": false,
+      "delete": false
+    },
+    "comment": {
+      "find": false,
+      "findOne": false,
+      "create": false,
+      "update": false,
+      "delete": false
+    }
+  }
+}

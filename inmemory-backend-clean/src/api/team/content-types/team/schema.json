@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "teams",
+  "info": {
+    "singularName": "team",
+    "pluralName": "teams",
+    "displayName": "Team"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "color": {
+      "type": "string",
+      "required": true
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "teams"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "team"
+    },
+    "votes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::vote.vote",
+      "mappedBy": "team"
+    }
+  }
+} 
