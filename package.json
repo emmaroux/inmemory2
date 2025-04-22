@@ -17,7 +17,8 @@
     "dev:all": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
     "build:back": "cd inmemory-backend-clean && npm run build",
     "build:front": "cd inmemory-web && npm run build",
-    "build:all": "npm run build:back && npm run build:front"
+    "build:all": "npm run build:back && npm run build:front",
+    "restart:all": "pkill -f \"strapi develop\" || true && pkill -f \"next dev\" || true && npm run dev:all"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
