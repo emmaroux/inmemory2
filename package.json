@@ -21,6 +21,8 @@
     "restart:all": "pkill -f \"strapi develop\" || true && pkill -f \"next dev\" || true && npm run dev:all"
   },
   "devDependencies": {
+    "@strapi/types": "^5.12.6",
+    "@types/node": "^22.14.1",
     "concurrently": "^8.2.2"
   },
   "repository": {
@@ -36,4 +38,4 @@
   ],
   "author": "",
   "license": "ISC"
-} 
+}

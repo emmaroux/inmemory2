@@ -35,6 +35,17 @@
       "relation": "oneToMany",
       "target": "api::vote.vote",
       "mappedBy": "team"
+    },
+    "resources": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::resource.resource",
+      "mappedBy": "teams"
+    },
+    "isWelcomeTeam": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 } 

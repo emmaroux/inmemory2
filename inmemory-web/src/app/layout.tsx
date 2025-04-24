@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Navbar from "./components/layout/Navbar";
+import { AuthProvider } from './context/AuthContext';
 
 export const metadata: Metadata = {
   title: "InMemory - Ressources de développement",
@@ -17,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="fr" data-theme="light" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="antialiased bg-white">
-        <Navbar />
-        <main className="pt-20 min-h-screen">
-          {children}
-        </main>
+        <AuthProvider>
+          <Navbar />
+          <main className="pt-20 min-h-screen">
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );

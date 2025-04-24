@@ -1,4 +1,100 @@
-# Documentation Technique InMemory
+# Documentation InMemory
+
+## État actuel du projet
+
+### Fonctionnalités opérationnelles
+
+1. **Affichage des ressources**
+   - Liste des ressources avec pagination
+   - Affichage en grille avec des cartes
+   - Gestion des images (avec fallback sur les initiales si pas d'image)
+   - Affichage des métadonnées (date de publication, nombre de votes, commentaires)
+
+2. **Filtrage par catégories**
+   - Sélecteur de catégories fonctionnel
+   - Possibilité de voir toutes les ressources
+   - Mise à jour dynamique de l'affichage
+
+3. **Interface utilisateur**
+   - Design responsive
+   - Composants réutilisables
+   - Gestion des états de chargement
+   - Gestion des erreurs
+
+### Architecture technique
+
+1. **Frontend (Next.js)**
+   - Structure en composants React
+   - Gestion d'état avec React Hooks
+   - Typage TypeScript
+   - Styling avec Tailwind CSS
+
+2. **Backend (Strapi)**
+   - API REST pour les ressources
+   - Gestion des catégories
+   - Système de pagination
+   - Relations entre les modèles (ressources, catégories, équipes)
+
+## Défis et points d'attention
+
+### Authentification et autorisation
+
+Nous avons rencontré plusieurs défis concernant l'authentification :
+
+1. **Problèmes identifiés**
+   - Difficulté à gérer correctement le token d'authentification
+   - Problèmes avec le filtrage des ressources basé sur l'utilisateur connecté
+   - Complexité dans la gestion des équipes et des permissions
+
+2. **Solutions temporaires**
+   - Désactivation temporaire du filtrage par authentification
+   - Affichage de toutes les ressources pour simplifier le développement
+   - Report de la logique d'équipes pour une phase ultérieure
+
+3. **Recommandations pour l'implémentation future**
+   - Implémenter un système de gestion de session robuste
+   - Utiliser le contexte d'authentification (`AuthContext`) uniquement après avoir validé son fonctionnement
+   - Mettre en place un système de permissions granulaire au niveau de Strapi
+   - Tester exhaustivement les scénarios d'authentification avant de les réactiver
+
+### Points à améliorer
+
+1. **Authentification**
+   - Réimplémentation du système d'authentification
+   - Gestion des permissions par équipe
+   - Filtrage des ressources selon les droits d'accès
+
+2. **Performance**
+   - Optimisation des requêtes API
+   - Mise en cache des données
+   - Chargement progressif des images
+
+3. **Expérience utilisateur**
+   - Amélioration des retours visuels
+   - Gestion plus fine des erreurs
+   - Animations et transitions
+
+## Guide de développement
+
+### Pour continuer le développement
+
+1. L'authentification est actuellement désactivée pour permettre un développement stable
+2. Les ressources sont affichées sans filtrage par utilisateur ou équipe
+3. Le système est prêt pour l'ajout de nouvelles fonctionnalités
+
+### Pour réactiver l'authentification
+
+1. Vérifier le bon fonctionnement du `AuthContext`
+2. Implémenter la logique de filtrage dans le backend Strapi
+3. Tester les différents scénarios d'authentification
+4. Réactiver progressivement les fonctionnalités liées à l'authentification
+
+### Bonnes pratiques
+
+1. Toujours tester les nouvelles fonctionnalités sans authentification d'abord
+2. Ajouter des logs détaillés pour le débogage
+3. Maintenir une documentation à jour des changements
+4. Faire des tests exhaustifs avant de merger dans la branche principale
 
 ## Introduction
 
@@ -607,4 +703,188 @@ Voir le fichier `BACKLOG.md` pour les évolutions futures du projet, notamment:
 
 - [Documentation Next.js](https://nextjs.org/docs)
 - [Documentation Strapi](https://docs.strapi.io)
-- [Documentation Tailwind CSS](https://tailwindcss.com/docs) 
+- [Documentation Tailwind CSS](https://tailwindcss.com/docs)
+
+## Implémentation de l'Affichage des Ressources
+
+### Structure des Données
+
+La structure des données retournée par Strapi pour les ressources est la suivante :
+```typescript
+interface Resource {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  link: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  isPublic: boolean;
+  category: {
+    id: number;
+    name: string;
+    // ... autres attributs de catégorie
+  } | null;
+  teams: Array<{
+    id: number;
+    name: string;
+    color: string;
+  }>;
+  votes: any[];
+  comments: any[];
+}
+```
+
+### Composants Principaux
+
+1. **Page Principale (`page.tsx`)**
+   ```typescript
+   // États principaux
+   const [resources, setResources] = useState<Resource[]>([]);
+   const [categories, setCategories] = useState<Category[]>([]);
+   const [loadingState, setLoadingState] = useState<'idle' | 'resources' | 'categories' | 'complete'>('idle');
+   const [currentPage, setCurrentPage] = useState(1);
+   const [pageSize] = useState(12);
+   ```
+
+2. **Grille de Ressources (`ResourceGrid.tsx`)**
+   ```typescript
+   interface ResourceGridProps {
+     resources: Resource[];
+     onResourceClick: (resource: Resource) => void;
+   }
+   ```
+
+3. **Carte de Ressource (`ResourceGridItem.tsx`)**
+   ```typescript
+   interface ResourceGridItemProps {
+     resource: Resource;
+     onClick: () => void;
+   }
+   ```
+
+### Récupération des Données
+
+La fonction de récupération des données a été simplifiée pour gérer uniquement les ressources sans authentification :
+
+```typescript
+const fetchData = useCallback(async () => {
+  setLoadingState('resources');
+  const strapiUrl = "http://localhost:1337";
+  try {
+    // Construction de l'URL avec pagination et relations
+    let resourcesUrl = `${strapiUrl}/api/resources?pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&populate=*`;
+    
+    if (selectedCategory) {
+      resourcesUrl += `&filters[category][id][$eq]=${selectedCategory}`;
+    }
+
+    const resourcesResponse = await fetch(resourcesUrl);
+    const resourcesData = await resourcesResponse.json();
+    
+    // Transformation des données
+    const formattedResources = resourcesData.data.map((item: any) => ({
+      id: item.id,
+      documentId: `resource-${item.id}`,
+      title: item.title || 'Sans titre',
+      description: item.description || '',
+      imageUrl: item.imageUrl || null,
+      link: item.link || null,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+      publishedAt: item.publishedAt,
+      isPublic: item.isPublic || false,
+      category: item.category ? {
+        id: item.category.id,
+        name: item.category.name || '',
+        // ... autres attributs
+      } : null,
+      teams: (item.teams || []).map((team: any) => ({
+        id: team.id,
+        name: team.name,
+        color: team.color
+      })),
+      votes: [],
+      comments: []
+    }));
+
+    setResources(formattedResources);
+    setTotalPages(resourcesData.meta?.pagination?.pageCount || 1);
+  } catch (err) {
+    console.error('Erreur détaillée:', err);
+    setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+  }
+  setLoadingState('complete');
+}, [currentPage, pageSize, selectedCategory]);
+```
+
+### Points Clés de l'Implémentation
+
+1. **Gestion des Données Manquantes**
+   - Utilisation de valeurs par défaut pour tous les champs (`|| ''`, `|| null`)
+   - Vérification de l'existence des objets imbriqués avant accès
+   - Transformation des IDs en documentIds uniques
+
+2. **Optimisations**
+   - Utilisation de `useCallback` pour la fonction de récupération
+   - Pagination côté serveur avec `pageSize`
+   - Chargement des relations en une seule requête avec `populate=*`
+
+3. **Gestion des États**
+   - État de chargement granulaire (`loadingState`)
+   - Gestion séparée des erreurs
+   - État de pagination pour la navigation
+
+4. **Modifications Récentes**
+   - Suppression de la logique d'authentification pour simplifier le développement
+   - Accès direct aux propriétés des ressources sans passer par `attributes`
+   - Ajout de valeurs par défaut plus robustes
+
+### Bonnes Pratiques Identifiées
+
+1. **Structure des Données**
+   - Toujours définir des interfaces TypeScript claires
+   - Prévoir des valeurs par défaut pour tous les champs
+   - Utiliser des types stricts plutôt que `any`
+
+2. **Gestion des Erreurs**
+   - Logger les erreurs détaillées en développement
+   - Fournir des messages d'erreur utilisateur appropriés
+   - Gérer les cas d'erreur de manière gracieuse
+
+3. **Performance**
+   - Pagination côté serveur
+   - Chargement optimisé des relations
+   - Mise en cache des données quand approprié
+
+### Problèmes Connus et Solutions
+
+1. **Problème d'Authentification**
+   ```typescript
+   // Ancien code problématique
+   if (isAuthenticated) {
+     resourcesUrl += '&filters[$or][0][isPublic][$eq]=true';
+     resourcesUrl += `&filters[$or][1][teams][users][id][$eq]=${userId}`;
+   }
+   ```
+   Solution : Temporairement désactivé pour simplifier le développement
+
+2. **Structure des Données Strapi**
+   ```typescript
+   // Ancien accès problématique
+   title: item.attributes?.title || ''
+   
+   // Nouvelle approche simplifiée
+   title: item.title || ''
+   ```
+
+3. **Gestion des Relations**
+   ```typescript
+   // Simplification de l'accès aux relations
+   category: item.category ? {
+     id: item.category.id,
+     name: item.category.name || ''
+   } : null
+   ``` 

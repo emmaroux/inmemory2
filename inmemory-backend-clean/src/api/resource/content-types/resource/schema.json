@@ -42,6 +42,17 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "resource"
+    },
+    "teams": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::team.team",
+      "inversedBy": "resources"
+    },
+    "isPublic": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 } 
