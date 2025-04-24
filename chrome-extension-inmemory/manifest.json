@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "InMemory - Save Resources",
+  "version": "1.0",
+  "description": "Extension pour sauvegarder des ressources dans InMemory",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+} 
