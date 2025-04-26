@@ -5,7 +5,11 @@
   "description": "Extension pour sauvegarder des ressources dans InMemory",
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "popup.html"

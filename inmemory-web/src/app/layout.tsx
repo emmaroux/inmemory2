@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="antialiased bg-white">
         <AuthProvider>
           <Navbar />
-          <main className="pt-20 min-h-screen">
+          <main className="pt-24 min-h-screen">
             {children}
           </main>
         </AuthProvider>

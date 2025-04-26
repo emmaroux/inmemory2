@@ -1,5 +1,52 @@
 # Documentation InMemory
 
+## ⚠️ PRÉ-REQUIS CRITIQUES POUR STRAPI
+
+### 1. Structure des Données
+La structure des données retournée par Strapi dépend de la version et de la configuration. Dans notre cas :
+- Les données sont directement accessibles à la racine des objets (PAS dans `attributes`)
+- Exemple : `item.title` au lieu de `item.attributes.title`
+- Les relations sont des tableaux directs : `item.votes` au lieu de `item.attributes.votes.data`
+
+### 2. Population des Relations
+Pour récupérer les relations, utiliser :
+```typescript
+// ✅ CORRECT
+?populate[category]=true&populate[votes]=true&populate[comments]=true
+
+// ❌ INCORRECT - Ne pas utiliser
+?populate=* ou ?populate[relation]=*
+```
+
+### 3. Transformation des Données
+```typescript
+// ✅ CORRECT
+const resource = {
+  title: item.title,
+  votes: (item.votes || []).map(vote => ({
+    value: vote.value,
+    userId: vote.user?.id
+  }))
+};
+
+// ❌ INCORRECT
+const resource = {
+  title: item.attributes.title,
+  votes: item.attributes.votes.data.map(vote => ({
+    value: vote.attributes.value,
+    userId: vote.attributes.user.data.id
+  }))
+};
+```
+
+### 4. Points de Vigilance
+- Toujours vérifier la présence des données avec des valeurs par défaut
+- Utiliser l'opérateur optionnel `?.` pour les relations
+- Logger la structure des données en cas de doute
+- Tester les requêtes dans l'interface admin de Strapi avant implémentation
+
+---
+
 ## État actuel du projet
 
 ### Fonctionnalités opérationnelles

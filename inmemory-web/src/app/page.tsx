@@ -35,7 +35,7 @@ export default function Home() {
     setLoadingState('resources');
     const strapiUrl = "http://localhost:1337";
     try {
-      let resourcesUrl = `${strapiUrl}/api/resources?pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&populate=*`;
+      let resourcesUrl = `${strapiUrl}/api/resources?pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&populate[category]=true&populate[votes]=true&populate[comments]=true`;
       
       if (selectedCategory) {
         resourcesUrl += `&filters[category][id][$eq]=${selectedCategory}`;
@@ -49,14 +49,19 @@ export default function Home() {
       }
       
       const resourcesData = await resourcesResponse.json();
-      console.log('Raw resources data:', resourcesData);
+      console.log('Raw resources data:', JSON.stringify(resourcesData, null, 2));
       
       let formattedResources: Resource[] = [];
       
       if (Array.isArray(resourcesData.data)) {
-        console.log('Processing resources data array:', resourcesData.data);
         formattedResources = resourcesData.data.map((item: any) => {
-          console.log('Processing resource item:', item);
+          console.log('Processing item:', JSON.stringify(item, null, 2));
+          
+          if (!item) {
+            console.error('Invalid item structure:', item);
+            return null;
+          }
+
           return {
             id: item.id,
             documentId: `resource-${item.id}`,
@@ -64,28 +69,38 @@ export default function Home() {
             description: item.description || '',
             imageUrl: item.imageUrl || null,
             link: item.link || null,
-            createdAt: item.createdAt,
-            updatedAt: item.updatedAt,
-            publishedAt: item.publishedAt,
+            createdAt: item.createdAt || null,
+            updatedAt: item.updatedAt || null,
+            publishedAt: item.publishedAt || null,
             isPublic: item.isPublic || false,
             category: item.category ? {
               id: item.category.id,
               documentId: `category-${item.category.id}`,
               name: item.category.name || '',
-              createdAt: item.category.createdAt,
-              updatedAt: item.category.updatedAt,
-              publishedAt: item.category.publishedAt,
+              createdAt: item.category.createdAt || null,
+              updatedAt: item.category.updatedAt || null,
+              publishedAt: item.category.publishedAt || null,
               description: item.category.description || ''
             } : null,
             teams: (item.teams || []).map((team: any) => ({
               id: team.id,
-              name: team.name,
-              color: team.color
+              name: team.name || '',
+              color: team.color || ''
             })),
-            votes: [],
-            comments: []
+            votes: (item.votes || []).map((vote: any) => ({
+              id: vote.id,
+              value: vote.value || 0,
+              userId: vote.user?.id || null,
+              createdAt: vote.createdAt || null
+            })),
+            comments: (item.comments || []).map((comment: any) => ({
+              id: comment.id,
+              content: comment.content || '',
+              userId: comment.user?.id || null,
+              createdAt: comment.createdAt || null
+            }))
           };
-        });
+        }).filter(Boolean);
       }
       
       console.log('Formatted resources:', formattedResources);
@@ -134,12 +149,14 @@ export default function Home() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Ressources InMemory</h1>
       
-      <CategoryFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={handleCategoryChange}
-        loading={loadingState === 'categories'}
-      />
+      <div className="mb-8">
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={handleCategoryChange}
+          loading={loadingState === 'categories'}
+        />
+      </div>
 
       {error ? (
         <div className="text-red-500 text-center my-4">{error}</div>
